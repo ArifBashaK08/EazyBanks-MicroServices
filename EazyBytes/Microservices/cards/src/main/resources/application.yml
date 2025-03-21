@@ -1,5 +1,6 @@
 server:
   port: 9000
+
 spring:
   application:
     name: cards
@@ -16,3 +17,22 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  config:
+    import:
+      - "application_qa.yml"
+      - "application_prod.yml"
+    profiles:
+      activate:
+        - "prod"
+
+build:
+  version: "3.0"
+
+cards:
+  message: "Welcome to EazyBank accounts Dev Rest API"
+  contactDetails:
+    name: "Allen Sung - Dev Lead"
+    email: "allen.sung@eazybank.com"
+  onCallSupport:
+    - (321) 858-1496
+    - (321) 858-1495

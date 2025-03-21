@@ -1,0 +1,16 @@
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+
+build:
+  version: "1.0"
+
+cards:
+  message: "Welcome to EazyBank accounts prod Rest API"
+  contactDetails:
+    name: "Brian Barry - Product Owner"
+    email: "brian.barry@eazybank.com"
+  onCallSupport:
+    - (123) 588-7896
+    - (123) 588-7895

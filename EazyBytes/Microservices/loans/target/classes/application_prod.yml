@@ -1,0 +1,16 @@
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+
+build:
+  version: "1.0"
+
+loans:
+  message: "Welcome to EazyBank loans prod Rest API"
+  contactDetails:
+    name: "Henry Jackson - Product Owner"
+    email: "henry.jackson@eazybank.com"
+  onCallSupport:
+    - (852) 741-5691
+    - (852) 741-5692

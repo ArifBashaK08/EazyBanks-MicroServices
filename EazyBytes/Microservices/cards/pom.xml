@@ -125,7 +125,7 @@
 				<version>3.4.2</version>
 				<configuration>
 					<to>
-						<image>arifkolimi08/${project.artifactId}:v1</image>
+						<image>arifkolimi08/${project.artifactId}:v2</image>
 					</to>
 				</configuration>
 			</plugin>

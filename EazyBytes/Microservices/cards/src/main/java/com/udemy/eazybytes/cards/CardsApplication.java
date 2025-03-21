@@ -8,9 +8,13 @@ import io.swagger.v3.oas.annotations.info.License;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import com.udemy.eazybytes.cards.dto.CardsContactInfoDTO;
+
 
 @SpringBootApplication
 @EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
+@EnableConfigurationProperties(value={CardsContactInfoDTO.class})
 //For Documentation purpose at "/swagger-ui.html" endpoint
 @OpenAPIDefinition(
         info = @Info(

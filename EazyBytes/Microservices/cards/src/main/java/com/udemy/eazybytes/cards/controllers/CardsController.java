@@ -1,6 +1,7 @@
 package com.udemy.eazybytes.cards.controllers;
 
 import com.udemy.eazybytes.cards.constants.CardsConstants;
+import com.udemy.eazybytes.cards.dto.CardsContactInfoDTO;
 import com.udemy.eazybytes.cards.dto.CardsDTO;
 import com.udemy.eazybytes.cards.dto.ErrorResponseDTO;
 import com.udemy.eazybytes.cards.dto.ResponseDTO;
@@ -13,7 +14,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,11 +33,20 @@ import org.springframework.web.bind.annotation.*;
         path = "/api/cards",
         produces = {MediaType.APPLICATION_JSON_VALUE}
 )
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Validated
 public class CardsController {
 
-    private ICardsServices iCardsServices;
+    private final ICardsServices iCardsServices;
+
+    @Value("${build.version}")
+    private String buildVersion;
+
+    @Autowired
+    private Environment environment;
+
+    @Autowired
+    private CardsContactInfoDTO cardsContactInfoDTO;
 
     @Operation(
             summary = "Create Card REST API",
@@ -163,4 +176,72 @@ public class CardsController {
                             CardsConstants.MESSAGE_417_DELETE));
         }
     }
+
+    //======================= Profiling Demo =======================//
+    @Operation(
+            summary = "Gives build Details",
+            description = "REST API to get build details"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status INTERNAL_SERVER_ERROR",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
+            )
+    })
+    @GetMapping("/build-info")
+    public ResponseEntity<String> getBuildInfo() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(buildVersion);
+    }
+
+    @Operation(
+            summary = "Gives Java version",
+            description = "REST API to get Java version"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status INTERNAL_SERVER_ERROR",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
+            )
+    })
+    @GetMapping("/java-version")
+    public ResponseEntity<String> getJavaVersion() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(environment.getProperty("JAVA_HOME"));
+    }
+
+    @Operation(
+            summary = "Gives Java version",
+            description = "REST API to get Java version"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status INTERNAL_SERVER_ERROR",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
+            )
+    })
+    @GetMapping("/contact-info")
+    public ResponseEntity<CardsContactInfoDTO> getContactInfo() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(cardsContactInfoDTO);
+    }
+
 }

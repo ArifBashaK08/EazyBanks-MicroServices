@@ -1,0 +1,16 @@
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+
+build:
+  version: "1.0"
+
+accounts:
+  message: "Welcome to EazyBank cards prod Rest API"
+  contactDetails:
+    name: "Michel Hussy - Product Owner"
+    email: "michel.hussy@eazybank.com"
+  onCallSupport:
+    - (321) 593-4596
+    - (321) 593-4595
