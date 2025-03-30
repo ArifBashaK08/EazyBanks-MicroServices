@@ -2,6 +2,7 @@ D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\jav
 D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\constants\LoansConstants.java
 D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\controller\LoansController.java
 D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\dto\ErrorResponseDto.java
+D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\dto\LoansContactDetailsInfo.java
 D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\dto\LoansDto.java
 D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\dto\ResponseDto.java
 D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\entity\BaseEntity.java

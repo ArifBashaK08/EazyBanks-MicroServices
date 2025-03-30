@@ -4,35 +4,22 @@ server:
 spring:
   application:
     name: loans
+  profiles:
+    active: "prod"
   datasource:
-    url: jdbc:h2:mem:testdb2
-    driverClassName: org.h2.Driver
-    username: sa
-    password: ''
-  h2:
-    console:
-      enable: true
+    url: jdbc:mysql://localhost:3308/loansdb
+    username: root
+    password: root
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: update
     show-sql: true
+  sql:
+    init:
+      mode: always
   config:
-    import:
-      - "application_qa.yml"
-      - "application_prod.yml"
-    profiles:
-      activate:
-        - "prod"
+    import: "optional:configserver:http://localhost:8071/"
 
-build:
-  version: "3.0"
-
-loans:
-  message: "Welcome to EazyBank loans Dev Rest API"
-  contactDetails:
-    name: "Jinoo Sung Woo - Dev Lead"
-    email: "jinoo.sung.woo@eazybank.com"
-  onCallSupport:
-    - (852) 741-0391
-    - (852) 741-0392
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
