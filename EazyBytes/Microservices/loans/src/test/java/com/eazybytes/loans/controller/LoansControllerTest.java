@@ -1,6 +1,6 @@
 package com.eazybytes.loans.controller;
 
-import com.eazybytes.loans.dto.LoansDto;
+import com.eazybytes.loans.dto.LoansDTO;
 import com.eazybytes.loans.entity.Loans;
 import com.eazybytes.loans.repository.LoansRepository;
 import com.eazybytes.loans.service.ILoansService;
@@ -44,11 +44,11 @@ class LoansControllerTest {
     @InjectMocks
     private LoansController loansController;
 
-    LoansDto loansDto1 = new LoansDto("9876543210", "100762831592", "Personal Loan", 100000, 50000, 50000);
-    LoansDto loansDto2 = new LoansDto("8765432109", "200763945673", "Home Loan", 500000, 200000, 300000);
-    LoansDto loansDto3 = new LoansDto("9654321098", "300764123987", "Car Loan", 300000, 100000, 200000);
-    LoansDto loansDto4 = new LoansDto("8543210987", "400765789654", "Education Loan", 200000, 50000, 150000);
-    LoansDto loansDto5 = new LoansDto("9432109876", "500766231478", "Gold Loan", 150000, 100000, 50000);
+    LoansDTO loansDTO1 = new LoansDTO("9876543210", "100762831592", "Personal Loan", 100000, 50000, 50000);
+    LoansDTO loansDTO2 = new LoansDTO("8765432109", "200763945673", "Home Loan", 500000, 200000, 300000);
+    LoansDTO loansDTO3 = new LoansDTO("9654321098", "300764123987", "Car Loan", 300000, 100000, 200000);
+    LoansDTO loansDTO4 = new LoansDTO("8543210987", "400765789654", "Education Loan", 200000, 50000, 150000);
+    LoansDTO loansDTO5 = new LoansDTO("9432109876", "500766231478", "Gold Loan", 150000, 100000, 50000);
 
     @BeforeEach
     void setUp() {
@@ -68,7 +68,7 @@ class LoansControllerTest {
                 .build();
 
         Mockito.when(loansRepo.save(newLoan)).thenReturn(newLoan);
-        Mockito.doNothing().when(iLoansService).createLoan(String.valueOf(Mockito.any(LoansDto.class)));
+        Mockito.doNothing().when(iLoansService).createLoan(String.valueOf(Mockito.any(LoansDTO.class)));
 
         String content = objectWriter.writeValueAsString(newLoan);
 
@@ -89,7 +89,7 @@ class LoansControllerTest {
 
     @Test
     public void fetchLoanDetails() throws Exception {
-        Mockito.when(iLoansService.fetchLoan(loansDto4.getMobileNumber())).thenReturn(loansDto4);
+        Mockito.when(iLoansService.fetchLoan(loansDTO4.getMobileNumber())).thenReturn(loansDTO4);
 
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/loans/fetch")
@@ -103,7 +103,7 @@ class LoansControllerTest {
 
     @Test
     public void updateLoanDetails() throws Exception {
-        loansDto3 = LoansDto.builder()
+        loansDTO3 = LoansDTO.builder()
                 .loanNumber("300764123987")
                 .mobileNumber("9654321098")
                 .loanType("Education Loan")
@@ -112,9 +112,9 @@ class LoansControllerTest {
                 .outstandingAmount(2000000)
                 .build();
 
-        Mockito.when(iLoansService.updateLoan(loansDto3)).thenReturn(true);
+        Mockito.when(iLoansService.updateLoan(loansDTO3)).thenReturn(true);
 
-        String content = objectWriter.writeValueAsString(loansDto3);
+        String content = objectWriter.writeValueAsString(loansDTO3);
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
                 .put("/api/loans/update")
@@ -130,7 +130,7 @@ class LoansControllerTest {
 
     @Test
     public void deleteLoanDetails() throws Exception {
-        String mobileNumber = loansDto2.getMobileNumber();
+        String mobileNumber = loansDTO2.getMobileNumber();
         Mockito.when(iLoansService.deleteLoan(mobileNumber)).thenReturn(true);
 
         mockMvc.perform(MockMvcRequestBuilders

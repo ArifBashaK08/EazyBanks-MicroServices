@@ -1,10 +1,10 @@
 D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\audit\AuditAwareImpl.java
 D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\constants\LoansConstants.java
 D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\controller\LoansController.java
-D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\dto\ErrorResponseDto.java
+D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\dto\ErrorResponseDTO.java
 D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\dto\LoansContactDetailsInfo.java
-D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\dto\LoansDto.java
-D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\dto\ResponseDto.java
+D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\dto\LoansDTO.java
+D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\dto\ResponseDTO.java
 D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\entity\BaseEntity.java
 D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\entity\Loans.java
 D:\Projects\SpringBoot Projects\Udemy\EazyBytes\Microservices\loans\src\main\java\com\eazybytes\loans\exception\GlobalExceptionHandler.java

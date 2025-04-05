@@ -25,6 +25,7 @@ encrypt:
 server:
   port: 8071
 
+#Acctuator related properties
 management:
   endpoints:
     web:

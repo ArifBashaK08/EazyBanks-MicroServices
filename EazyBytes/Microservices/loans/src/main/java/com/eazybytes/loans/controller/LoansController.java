@@ -1,10 +1,10 @@
 package com.eazybytes.loans.controller;
 
 import com.eazybytes.loans.constants.LoansConstants;
-import com.eazybytes.loans.dto.ErrorResponseDto;
+import com.eazybytes.loans.dto.ErrorResponseDTO;
 import com.eazybytes.loans.dto.LoansContactDetailsInfo;
-import com.eazybytes.loans.dto.LoansDto;
-import com.eazybytes.loans.dto.ResponseDto;
+import com.eazybytes.loans.dto.LoansDTO;
+import com.eazybytes.loans.dto.ResponseDTO;
 import com.eazybytes.loans.service.ILoansService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -62,19 +62,19 @@ public class LoansController {
                     responseCode = "500",
                     description = "HTTP Status Internal Server Error",
                     content = @Content(
-                            schema = @Schema(implementation = ErrorResponseDto.class)
+                            schema = @Schema(implementation = ErrorResponseDTO.class)
                     )
             )
     }
     )
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> createLoan(@RequestParam
+    public ResponseEntity<ResponseDTO> createLoan(@RequestParam
                                                       @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
                                                       String mobileNumber) {
         iLoansService.createLoan(mobileNumber);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ResponseDto(LoansConstants.STATUS_201, LoansConstants.MESSAGE_201));
+                .body(new ResponseDTO(LoansConstants.STATUS_201, LoansConstants.MESSAGE_201));
     }
 
     @Operation(
@@ -90,16 +90,16 @@ public class LoansController {
                     responseCode = "500",
                     description = "HTTP Status Internal Server Error",
                     content = @Content(
-                            schema = @Schema(implementation = ErrorResponseDto.class)
+                            schema = @Schema(implementation = ErrorResponseDTO.class)
                     )
             )
     }
     )
     @GetMapping("/fetch")
-    public ResponseEntity<LoansDto> fetchLoanDetails(@RequestParam
+    public ResponseEntity<LoansDTO> fetchLoanDetails(@RequestParam
                                                                @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
                                                                String mobileNumber) {
-        LoansDto loansDto = iLoansService.fetchLoan(mobileNumber);
+        LoansDTO loansDto = iLoansService.fetchLoan(mobileNumber);
         return ResponseEntity.status(HttpStatus.OK).body(loansDto);
     }
 
@@ -120,22 +120,22 @@ public class LoansController {
                     responseCode = "500",
                     description = "HTTP Status Internal Server Error",
                     content = @Content(
-                            schema = @Schema(implementation = ErrorResponseDto.class)
+                            schema = @Schema(implementation = ErrorResponseDTO.class)
                     )
             )
         }
     )
     @PutMapping("/update")
-    public ResponseEntity<ResponseDto> updateLoanDetails(@Valid @RequestBody LoansDto loansDto) {
+    public ResponseEntity<ResponseDTO> updateLoanDetails(@Valid @RequestBody LoansDTO loansDto) {
         boolean isUpdated = iLoansService.updateLoan(loansDto);
         if(isUpdated) {
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(new ResponseDto(LoansConstants.STATUS_200, LoansConstants.MESSAGE_200));
+                    .body(new ResponseDTO(LoansConstants.STATUS_200, LoansConstants.MESSAGE_200));
         }else{
             return ResponseEntity
                     .status(HttpStatus.EXPECTATION_FAILED)
-                    .body(new ResponseDto(LoansConstants.STATUS_417, LoansConstants.MESSAGE_417_UPDATE));
+                    .body(new ResponseDTO(LoansConstants.STATUS_417, LoansConstants.MESSAGE_417_UPDATE));
         }
     }
 
@@ -156,24 +156,24 @@ public class LoansController {
                     responseCode = "500",
                     description = "HTTP Status Internal Server Error",
                     content = @Content(
-                            schema = @Schema(implementation = ErrorResponseDto.class)
+                            schema = @Schema(implementation = ErrorResponseDTO.class)
                     )
             )
     }
     )
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponseDto> deleteLoanDetails(@RequestParam
+    public ResponseEntity<ResponseDTO> deleteLoanDetails(@RequestParam
                                                                 @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
                                                                 String mobileNumber) {
         boolean isDeleted = iLoansService.deleteLoan(mobileNumber);
         if(isDeleted) {
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(new ResponseDto(LoansConstants.STATUS_200, LoansConstants.MESSAGE_200));
+                    .body(new ResponseDTO(LoansConstants.STATUS_200, LoansConstants.MESSAGE_200));
         }else{
             return ResponseEntity
                     .status(HttpStatus.EXPECTATION_FAILED)
-                    .body(new ResponseDto(LoansConstants.STATUS_417, LoansConstants.MESSAGE_417_DELETE));
+                    .body(new ResponseDTO(LoansConstants.STATUS_417, LoansConstants.MESSAGE_417_DELETE));
         }
     }
 
@@ -190,7 +190,7 @@ public class LoansController {
             @ApiResponse(
                     responseCode = "500",
                     description = "HTTP Status INTERNAL_SERVER_ERROR",
-                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
             )
     })
     @GetMapping("/build-info")
@@ -212,7 +212,7 @@ public class LoansController {
             @ApiResponse(
                     responseCode = "500",
                     description = "HTTP Status INTERNAL_SERVER_ERROR",
-                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
             )
     })
     @GetMapping("/java-version")
@@ -234,7 +234,7 @@ public class LoansController {
             @ApiResponse(
                     responseCode = "500",
                     description = "HTTP Status INTERNAL_SERVER_ERROR",
-                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
             )
     })
     @GetMapping("/contact-info")

@@ -73,7 +73,7 @@
 				<version>3.4.2</version>
 				<configuration>
 					<to>
-						<image>arifbashak08/${project.artifactId}:v3</image>
+						<image>arifbashak08/${project.artifactId}:v4</image>
 					</to>
 				</configuration>
 			</plugin>
