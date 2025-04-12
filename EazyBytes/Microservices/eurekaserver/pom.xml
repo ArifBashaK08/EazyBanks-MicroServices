@@ -63,6 +63,13 @@
 
     <build>
         <plugins>
+<!--            <plugin>-->
+<!--                <groupId>org.graalvm.buildtools</groupId>-->
+<!--                <artifactId>native-maven-plugin</artifactId>-->
+<!--                <configuration>&lt;!&ndash;For dev purpose&ndash;&gt;-->
+<!--                    <buildArgs>-Ob</buildArgs>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -73,7 +80,7 @@
                 <version>3.4.2</version>
                 <configuration>
                     <to>
-                        <image>arifbashak08/${project.artifactId}:v4</image>
+                        <image>arifbashak08/${project.artifactId}:v5</image>
                     </to>
                 </configuration>
             </plugin>

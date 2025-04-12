@@ -12,9 +12,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -47,6 +50,8 @@ public class CardsController {
 
     @Autowired
     private CardsContactInfoDTO cardsContactInfoDTO;
+
+    private static final Logger logger = LoggerFactory.getLogger(CardsController.class);
 
     @Operation(
             summary = "Create Card REST API",
@@ -95,10 +100,12 @@ public class CardsController {
     }
     )
     @GetMapping("/fetch")
-    public ResponseEntity<CardsDTO> fetchCardDetails(@RequestParam
+    public ResponseEntity<CardsDTO> fetchCardDetails(@RequestHeader("eazyBanks-correlation-id") String correlationId,
+                                                     @RequestParam
                                                      @Pattern(
                                                              regexp = "^[0-9]{10}$",
                                                              message = "Mobile number should be 10 digits") String mobileNumber) {
+        logger.debug("eazyBanks-correlation-id found : {}", correlationId);
         CardsDTO cardDetails = iCardsServices.fetchCardDetails(mobileNumber);
         return ResponseEntity.status(HttpStatus.OK).body(cardDetails);
     }
@@ -177,6 +184,11 @@ public class CardsController {
         }
     }
 
+    @RequestMapping("/**")
+    public ResponseEntity<String> unauthorizedAccess(HttpServletRequest request){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body("401 - Unauthorized Access");
+    }
     //======================= Profiling Demo =======================//
     @Operation(
             summary = "Gives build Details",

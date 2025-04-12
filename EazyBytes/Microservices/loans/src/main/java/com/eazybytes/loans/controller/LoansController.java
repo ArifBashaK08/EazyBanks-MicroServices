@@ -12,9 +12,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -39,15 +42,17 @@ import org.springframework.web.bind.annotation.*;
 public class LoansController {
 
     private final ILoansService iLoansService;
-    
+
     @Value("${build.version}")
     private String buildVersion;
-    
+
     @Autowired
     private Environment environment;
-    
+
     @Autowired
     private LoansContactDetailsInfo loansContactDetailsInfo;
+
+    private static final Logger logger = LoggerFactory.getLogger(LoansController.class);
 
     @Operation(
             summary = "Create Loan REST API",
@@ -69,8 +74,8 @@ public class LoansController {
     )
     @PostMapping("/create")
     public ResponseEntity<ResponseDTO> createLoan(@RequestParam
-                                                      @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
-                                                      String mobileNumber) {
+                                                  @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
+                                                  String mobileNumber) {
         iLoansService.createLoan(mobileNumber);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -96,9 +101,11 @@ public class LoansController {
     }
     )
     @GetMapping("/fetch")
-    public ResponseEntity<LoansDTO> fetchLoanDetails(@RequestParam
-                                                               @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
-                                                               String mobileNumber) {
+    public ResponseEntity<LoansDTO> fetchLoanDetails(@RequestHeader("eazyBanks-correlation-id") String correlationId,
+                                                     @RequestParam
+                                                     @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
+                                                     String mobileNumber) {
+        logger.debug("eazyBanks-correlation-id found : {}", correlationId);
         LoansDTO loansDto = iLoansService.fetchLoan(mobileNumber);
         return ResponseEntity.status(HttpStatus.OK).body(loansDto);
     }
@@ -123,16 +130,16 @@ public class LoansController {
                             schema = @Schema(implementation = ErrorResponseDTO.class)
                     )
             )
-        }
+    }
     )
     @PutMapping("/update")
     public ResponseEntity<ResponseDTO> updateLoanDetails(@Valid @RequestBody LoansDTO loansDto) {
         boolean isUpdated = iLoansService.updateLoan(loansDto);
-        if(isUpdated) {
+        if (isUpdated) {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(new ResponseDTO(LoansConstants.STATUS_200, LoansConstants.MESSAGE_200));
-        }else{
+        } else {
             return ResponseEntity
                     .status(HttpStatus.EXPECTATION_FAILED)
                     .body(new ResponseDTO(LoansConstants.STATUS_417, LoansConstants.MESSAGE_417_UPDATE));
@@ -163,18 +170,24 @@ public class LoansController {
     )
     @DeleteMapping("/delete")
     public ResponseEntity<ResponseDTO> deleteLoanDetails(@RequestParam
-                                                                @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
-                                                                String mobileNumber) {
+                                                         @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
+                                                         String mobileNumber) {
         boolean isDeleted = iLoansService.deleteLoan(mobileNumber);
-        if(isDeleted) {
+        if (isDeleted) {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(new ResponseDTO(LoansConstants.STATUS_200, LoansConstants.MESSAGE_200));
-        }else{
+        } else {
             return ResponseEntity
                     .status(HttpStatus.EXPECTATION_FAILED)
                     .body(new ResponseDTO(LoansConstants.STATUS_417, LoansConstants.MESSAGE_417_DELETE));
         }
+    }
+
+    @RequestMapping("/**")
+    public ResponseEntity<String> unauthorizedAccess(HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body("401 - Unauthorized Access");
     }
 
     //======================= Profiling Demo =======================//

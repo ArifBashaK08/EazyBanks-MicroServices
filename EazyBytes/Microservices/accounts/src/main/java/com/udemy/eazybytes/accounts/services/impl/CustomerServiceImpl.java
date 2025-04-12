@@ -22,7 +22,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class CustomerServiceImpl  implements ICustomerServices {
+public class CustomerServiceImpl implements ICustomerServices {
 
     private AccountsRepo accountsRepo;
     private CustomerRepo customerRepo;
@@ -30,23 +30,27 @@ public class CustomerServiceImpl  implements ICustomerServices {
     private LoansFeignClient loansFeignClient;
 
     @Override
-    public CustomersDetailsDTO fetchCustomerDetails(String mobileNumber) {
-    	Customer customer = customerRepo.findByMobileNumber(mobileNumber).orElseThrow(
-    			() -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber));
-    	
-    	Accounts account = accountsRepo.findByCustomerId(customer.getCustomerId()).orElseThrow(
-    			() -> new ResourceNotFoundException("Account", "customerId", customer.getCustomerId().toString()));
-    	
-    	CustomersDetailsDTO customersDetailsDTO = CustomerMapper.mapToCustomerDetailsDTO(customer, new CustomersDetailsDTO());
-    	
-    	customersDetailsDTO.setAccountsDTO(AccountsMapper.mapToAccountsDTO(account, new AccountsDTO()));
-    	
-    	ResponseEntity<LoansDTO> loansDTOResponseEntity = loansFeignClient.fetchLoanDetails(mobileNumber);
-    	customersDetailsDTO.setLoansDTO(loansDTOResponseEntity.getBody());
-    	
-    	ResponseEntity<CardsDTO> cardsDTOResponseEntity = cardsFeignClient.fetchCardDetails(mobileNumber);
-    	customersDetailsDTO.setCardsDTO(cardsDTOResponseEntity.getBody());
-    	
+    public CustomersDetailsDTO fetchCustomerDetails(String mobileNumber, String correlationId) {
+        Customer customer = customerRepo.findByMobileNumber(mobileNumber).orElseThrow(
+                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber));
+
+        Accounts account = accountsRepo.findByCustomerId(customer.getCustomerId()).orElseThrow(
+                () -> new ResourceNotFoundException("Account", "customerId", customer.getCustomerId().toString()));
+
+        CustomersDetailsDTO customersDetailsDTO = CustomerMapper.mapToCustomerDetailsDTO(customer, new CustomersDetailsDTO());
+
+        customersDetailsDTO.setAccountsDTO(AccountsMapper.mapToAccountsDTO(account, new AccountsDTO()));
+
+        ResponseEntity<LoansDTO> loansDTOResponseEntity = loansFeignClient.fetchLoanDetails(correlationId, mobileNumber);
+        if (null != loansDTOResponseEntity) {
+            customersDetailsDTO.setLoansDTO(loansDTOResponseEntity.getBody());
+        }
+
+        ResponseEntity<CardsDTO> cardsDTOResponseEntity = cardsFeignClient.fetchCardDetails(correlationId, mobileNumber);
+        if (null != loansDTOResponseEntity) {
+            customersDetailsDTO.setCardsDTO(cardsDTOResponseEntity.getBody());
+        }
+
         return customersDetailsDTO;
     }
 }

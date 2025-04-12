@@ -3,6 +3,7 @@ package com.udemy.eazybytes.accounts.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.udemy.eazybytes.accounts.dto.AccountsDTO;
+import com.udemy.eazybytes.accounts.dto.CustomerDTO;
 import com.udemy.eazybytes.accounts.entities.Accounts;
 import com.udemy.eazybytes.accounts.repositories.AccountsRepo;
 import com.udemy.eazybytes.accounts.services.IAccountsService;

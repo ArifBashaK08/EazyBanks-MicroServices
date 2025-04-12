@@ -21,6 +21,12 @@ spring:
       show-sql: true
   config:
     import: "optional:configserver:http://localhost:8071/"
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+#    refresh:
+#      enabled: false
 
 management:
   endpoints:
@@ -30,6 +36,9 @@ management:
   endpoint:
     shutdown:
       access: unrestricted
+      health:
+        probes:
+          enabled: true
   info:
     env:
       enabled: true
@@ -48,3 +57,18 @@ info:
     name: "accounts"
     description: "Eazy Bank Accounts Microservices"
     version: "1.0.0"
+
+logging:
+  level:
+    com:
+      udemy:
+        eazybytes:
+          accounts: DEBUG
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10 #no.of req to monitor before opening circuit
+      permittedNumberOfCallsInHalfOpenState: 2
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10000

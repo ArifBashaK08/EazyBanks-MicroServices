@@ -56,9 +56,13 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
+         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -117,9 +121,9 @@
             <artifactId>tomcat-embed-core</artifactId>
         </dependency>
         <dependency>
-        	<groupId>com.eazybytes</groupId>
-        	<artifactId>loans</artifactId>
-        	<version>0.0.1-SNAPSHOT</version>
+            <groupId>com.eazybytes</groupId>
+            <artifactId>loans</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -153,14 +157,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-<!--                <configuration>-->
-<!--                    <excludes>-->
-<!--                        <exclude>-->
-<!--                            <groupId>org.projectlombok</groupId>-->
-<!--                            <artifactId>lombok</artifactId>-->
-<!--                        </exclude>-->
-<!--                    </excludes>-->
-<!--                </configuration>-->
             </plugin>
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
@@ -168,7 +164,7 @@
                 <version>3.4.2</version>
                 <configuration>
                     <to>
-                        <image>arifbashak08/${project.artifactId}:v4</image>
+                        <image>arifbashak08/${project.artifactId}:v5 </image>
                     </to>
                 </configuration>
             </plugin>

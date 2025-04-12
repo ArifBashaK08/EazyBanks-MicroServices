@@ -64,16 +64,12 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
 				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>jib-maven-plugin</artifactId>
 				<version>3.4.2</version>
 				<configuration>
 					<to>
-						<image>arifbashak08/${project.artifactId}:v4</image>
+						<image>arifbashak08/${project.artifactId}:v5</image>
 					</to>
 				</configuration>
 			</plugin>

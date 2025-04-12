@@ -30,6 +30,9 @@ management:
   endpoint:
     shutdown:
       access: unrestricted
+    health:
+      probes:
+        enabled: true
   info:
     env:
       enabled: true
@@ -48,3 +51,9 @@ info:
     name: "loans"
     description: "Eazy Bank Loans Microservices"
     version: "1.0.0"
+
+logging:
+  level:
+    com:
+      eazybytes:
+        loans: DEBUG

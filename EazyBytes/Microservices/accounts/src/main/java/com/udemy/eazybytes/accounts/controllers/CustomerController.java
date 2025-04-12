@@ -10,9 +10,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +35,9 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 public class CustomerController {
 
-	private final ICustomerServices iCustomerServices;
-	
+    private final ICustomerServices iCustomerServices;
+    private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
+
     @Operation(
             summary = "Fetch Customer Details",
             description = "REST API to fetch user details using mobile number"
@@ -50,10 +54,19 @@ public class CustomerController {
             )
     })
     @GetMapping("/customer-details")
-    public ResponseEntity<CustomersDetailsDTO> fetchCustomerDetails(@RequestParam @Pattern(regexp = "^[0-9]{10}$",
-    message = "Mobile number must have 10 digits") String mobileNumber){
-    	CustomersDetailsDTO customersDetailsDTO = iCustomerServices.fetchCustomerDetails(mobileNumber);
-    	
-    	return ResponseEntity.status(HttpStatus.OK).body(customersDetailsDTO);
+    public ResponseEntity<CustomersDetailsDTO> fetchCustomerDetails(@RequestHeader("eazyBanks-correlation-id") String correlationId
+            , @RequestParam @Pattern(regexp = "^[0-9]{10}$",
+                    message = "Mobile number must have 10 digits") String mobileNumber) {
+        logger.debug("eazyBanks-correlation-id found : {}", correlationId);
+        CustomersDetailsDTO customersDetailsDTO = iCustomerServices.fetchCustomerDetails(mobileNumber, correlationId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(customersDetailsDTO);
     }
+
+    @RequestMapping("/**")
+    public ResponseEntity<String> unauthorizedAccess(HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body("401 - Unauthorized Access");
+    }
+
 }

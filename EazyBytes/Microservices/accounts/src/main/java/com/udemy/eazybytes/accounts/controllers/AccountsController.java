@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
@@ -233,4 +234,9 @@ public class AccountsController {
                 .body(accountsContactInfoDTO);
     }
 
+    @RequestMapping("/**")
+    public ResponseEntity<String> unauthorizedAccess(HttpServletRequest request){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body("401 - Unauthorized Access");
+    }
 }
