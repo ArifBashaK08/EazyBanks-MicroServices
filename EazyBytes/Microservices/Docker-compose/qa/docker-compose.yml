@@ -1,6 +1,18 @@
 services:
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD_SHELL", "redis-cli ping | grep PONG"]
+      timeout: 10s
+      retries: 10
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
   configserver:
-    image: "arifbashak08/configserver:v4"
+    image: "arifbashak08/configserver:v6"
     container_name: configserver-ms
     ports:
       - "8071:8071"
@@ -15,7 +27,7 @@ services:
       service: microservice-base-config
 
   eurekaserver:
-    image: "arifbashak08/eurekaserver:v4"
+    image: "arifbashak08/eurekaserver:v6"
     container_name: eurekaserver-ms
     ports:
       - "8070:8070"
@@ -35,10 +47,15 @@ services:
       SPRING_APPLICATION_NAME: "eurekaserver"
 
   accounts:
-    image: "arifbashak08/accounts:v4"
+    image: "arifbashak08/accounts:v6"
     container_name: accounts-ms
     ports:
       - "8080:8080"
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
     depends_on:
       configserver:
         condition: service_healthy
@@ -46,15 +63,21 @@ services:
         condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "accounts"
+    #      SPRING_DATASOURCE_URL: "jdbc:mysql://accountsdb:3306/accountsdb" #Commenting  cause H2 DB has used in all the microservices
     extends:
       file: common-config.yml
       service: microservice-eureka-config
 
   loans:
-    image: "arifbashak08/loans:v4"
+    image: "arifbashak08/loans:v6"
     container_name: loans-ms
     ports:
       - "8090:8090"
+    healthcheck:
+      test: "curl --fail --silent localhost:8090/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
     depends_on:
       configserver:
         condition: service_healthy
@@ -67,10 +90,15 @@ services:
       service: microservice-eureka-config
 
   cards:
-    image: "arifbashak08/cards:v4"
+    image: "arifbashak08/cards:v6"
     container_name: cards-ms
     ports:
       - "9000:9000"
+    healthcheck:
+      test: "curl --fail --silent localhost:9000/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
     depends_on:
       configserver:
         condition: service_healthy
@@ -78,6 +106,30 @@ services:
         condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "cards"
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
+
+  gatewayserver:
+    image: "arifbashak08/gatewayserver:v6"
+    container_name: gatewayserver-ms
+    ports:
+      - "8072:8072"
+    depends_on:
+      accounts:
+        condition: service_healthy
+      loans:
+        condition: service_healthy
+      cards:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "gatewayserver"
+      SPRING_DATA_REDIS_CONNECT-TIMEOUT: 2s
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_DATA_REDIS_TIMEOUT: 1s
     extends:
       file: common-config.yml
       service: microservice-eureka-config

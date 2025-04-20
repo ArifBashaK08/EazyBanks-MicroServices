@@ -56,9 +56,13 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -120,11 +124,11 @@
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.eazybytes</groupId>
-            <artifactId>loans</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.eazybytes</groupId>-->
+<!--            <artifactId>loans</artifactId>-->
+<!--&lt;!&ndash;            <version>0.0.1-SNAPSHOT</version>&ndash;&gt;-->
+<!--        </dependency>-->
     </dependencies>
 
     <dependencyManagement>
@@ -164,7 +168,7 @@
                 <version>3.4.2</version>
                 <configuration>
                     <to>
-                        <image>arifbashak08/${project.artifactId}:v5 </image>
+                        <image>arifbashak08/${project.artifactId}:v7 </image>
                     </to>
                 </configuration>
             </plugin>

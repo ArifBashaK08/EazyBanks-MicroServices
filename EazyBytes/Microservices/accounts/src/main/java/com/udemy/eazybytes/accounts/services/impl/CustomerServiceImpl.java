@@ -47,7 +47,7 @@ public class CustomerServiceImpl implements ICustomerServices {
         }
 
         ResponseEntity<CardsDTO> cardsDTOResponseEntity = cardsFeignClient.fetchCardDetails(correlationId, mobileNumber);
-        if (null != loansDTOResponseEntity) {
+        if (null != cardsDTOResponseEntity) {
             customersDetailsDTO.setCardsDTO(cardsDTOResponseEntity.getBody());
         }
 
