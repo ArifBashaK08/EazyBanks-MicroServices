@@ -72,6 +72,8 @@ logging:
       udemy:
         eazybytes:
           accounts: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
 resilience4j.circuitbreaker:
   configs:
@@ -85,7 +87,7 @@ resilience4j.retry:
   configs:
     default:
       maxAttempts: 3
-      waitDuration: 100
+      waitDuration: 500
       enabledExponentialBackoff: true
       exponentialBackoffMultiplier: 2
       ignoreExceptions:
