@@ -42,6 +42,7 @@ public class AccountsControllerTest {
 
     @InjectMocks
     private AccountsController accountsController;
+
     AccountsDTO accountsDTO1 = new AccountsDTO(9786453120L, "SAVINGS", "123 Street, Walnut Road");
     CustomerDTO customerDTO1 = new CustomerDTO("John Deo", "john.deo@gmail.com", "9856321470", accountsDTO1);
 

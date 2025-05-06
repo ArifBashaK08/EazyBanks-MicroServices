@@ -3,7 +3,11 @@ package com.udemy.eazybytes.accounts.services.impl;
 import java.util.Optional;
 import java.util.Random;
 
+import com.udemy.eazybytes.accounts.dto.AccountMsgDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 import com.udemy.eazybytes.accounts.constants.AccountsConstants;
@@ -29,6 +33,9 @@ public class AccountsServiceImpl implements IAccountsService {
     private AccountsRepo accountsRepo;
     @Autowired
     private CustomerRepo customerRepo;
+    @Autowired
+    private final StreamBridge streamBridge;
+    private static final Logger logger = LoggerFactory.getLogger(AccountsServiceImpl.class);
 
     @Override
     public void createAccount(CustomerDTO customerDTO) {
@@ -40,7 +47,8 @@ public class AccountsServiceImpl implements IAccountsService {
         }
 
         Customer savedCustomer = customerRepo.save(customer);
-        accountsRepo.save(createNewAccount(savedCustomer));
+        Accounts savedAccount = accountsRepo.save(createNewAccount(savedCustomer));
+        sendCommunication(savedAccount, savedCustomer);
     }
 
     private Accounts createNewAccount(Customer customer) {
@@ -53,6 +61,14 @@ public class AccountsServiceImpl implements IAccountsService {
         newAccount.setBranchAddress(AccountsConstants.ADDRESS);
 
         return newAccount;
+    }
+
+    private void sendCommunication(Accounts accounts, Customer customer) {
+        var accountsMsgDTO = new AccountMsgDTO(accounts.getAccountNumber(), customer.getName(),
+                customer.getEmail(), customer.getMobileNumber());
+        logger.info("Sending email with the details : {}", accountsMsgDTO);
+        var result = streamBridge.send("SendCommunication-out-0: ", accountsMsgDTO);
+        logger.info("Is the communication request processed successfully? {}", result);
     }
 
     @Override
@@ -80,7 +96,7 @@ public class AccountsServiceImpl implements IAccountsService {
         }
         Accounts accounts = accountsRepo.findById(accountsDTO.getAccountNumber())
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "AccountNumber",
-                accountsDTO.getAccountNumber().toString()));
+                        accountsDTO.getAccountNumber().toString()));
         AccountsMapper.mapToAccounts(accountsDTO, accounts);
 
         accounts = accountsRepo.save(accounts);
@@ -88,7 +104,7 @@ public class AccountsServiceImpl implements IAccountsService {
         Long customerId = accounts.getCustomerId();
         Customer customer = customerRepo.findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer", "CustomerDTO",
-                customerId.toString()));
+                        customerId.toString()));
 
         CustomerMapper.mapToCustomer(customerDTO, customer);
         customerRepo.save(customer);
@@ -103,5 +119,20 @@ public class AccountsServiceImpl implements IAccountsService {
         accountsRepo.deleteByCustomerId(customer.getCustomerId());
         customerRepo.deleteById(customer.getCustomerId());
         return true;
+    }
+
+    @Override
+    public boolean updateCommunicationStatus(Long accountNumber) {
+        boolean isUpdated = false;
+        if (accountNumber != null) {
+            Accounts accounts = accountsRepo.findById(accountNumber).orElseThrow(
+                    () -> new ResourceNotFoundException("Account", "AccountNumber", accountNumber.toString())
+            );
+            isUpdated = true;
+            accounts.setCommunicationSw(isUpdated);
+            accountsRepo.save(accounts);
+            return isUpdated;
+        }
+        return isUpdated;
     }
 }

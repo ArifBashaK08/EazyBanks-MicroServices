@@ -3,10 +3,7 @@ package com.udemy.eazybytes.accounts.entities;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -17,6 +14,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@ToString
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
 @NoArgsConstructor
@@ -33,7 +31,7 @@ public class BaseEntity {
 
     @LastModifiedDate
     @Column(insertable = false)
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 
     @LastModifiedBy
     @Column(insertable = false)
