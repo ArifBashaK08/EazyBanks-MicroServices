@@ -30,10 +30,10 @@ spring:
     stream:
       bindings:
         updateCommunication-in-0:
-          destination: Communication-sent
+          destination: communication-sent
           group: ${spring.application.name}
         sendCommunication-out-0:
-          destination: send-Communication
+          destination: send-communication
   rabbitmq:
     host: localhost
     port: 5672
