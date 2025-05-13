@@ -99,7 +99,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+            <artifactId>spring-cloud-stream-binder-kafka</artifactId>
         </dependency>
 
         <!--        DOCUMENTATION-->
@@ -184,7 +184,7 @@
                 <version>3.4.2</version>
                 <configuration>
                     <to>
-                        <image>arifbashak08/${project.artifactId}:v9</image>
+                        <image>arifbashak08/${project.artifactId}:v10</image>
                     </to>
                 </configuration>
             </plugin>
