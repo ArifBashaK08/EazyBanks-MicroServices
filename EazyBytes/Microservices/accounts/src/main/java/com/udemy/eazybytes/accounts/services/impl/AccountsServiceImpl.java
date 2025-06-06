@@ -67,7 +67,7 @@ public class AccountsServiceImpl implements IAccountsService {
         var accountsMsgDTO = new AccountMsgDTO(accounts.getAccountNumber(), customer.getName(),
                 customer.getEmail(), customer.getMobileNumber());
         logger.info("Sending email with the details : {}", accountsMsgDTO);
-        var result = streamBridge.send("SendCommunication-out-0: ", accountsMsgDTO);
+        var result = streamBridge.send("sendCommunication-out-0", accountsMsgDTO);
         logger.info("Is the communication request processed successfully? {}", result);
     }
 
